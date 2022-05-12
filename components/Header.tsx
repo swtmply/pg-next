@@ -24,7 +24,7 @@ export const NavLink: React.FC<PropsWithChildren<NavLinkProps>> = ({
 
 const Header = () => {
   return (
-    <header className="h-20 w-10/12 max-w-7xl border-b-2 border-b-gray-100 mb-2">
+    <header className="h-20 w-10/12 max-w-7xl border-b-2 border-b-gray-100 mb-4">
       <nav className="font-medium flex justify-between items-center px-2 py-4">
         <div className="flex items-center gap-1">
           <Image src="/assets/vectors/logo.svg" width={40} height={40} alt="" />
