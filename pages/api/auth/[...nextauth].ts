@@ -16,7 +16,7 @@ export default NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const user = prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
           where: {
             email: credentials?.email,
           },
@@ -31,6 +31,16 @@ export default NextAuth({
       },
     }),
   ],
+
+  secret: process.env.NEXTAUTH_SECRET,
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
+  },
+
+  pages: {
+    signIn: "auth/login",
+  },
+
   session: {
     strategy: "jwt",
   },

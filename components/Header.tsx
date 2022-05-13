@@ -44,7 +44,9 @@ const Header = () => {
               <MoonIcon className="w-6 h-6" />
             </button>
             <Link href="https://github.com/swtmply">
-              <GithubIcon className="w-6 h-6 hover:text-pink-500" />
+              <a>
+                <GithubIcon className="w-6 h-6 hover:text-pink-500" />
+              </a>
             </Link>
           </ul>
         </div>
