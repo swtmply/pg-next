@@ -23,6 +23,8 @@ const CreateTodo = () => {
             .post("/api/todo", { content })
             .then((res) => res.data);
 
+          setContent("");
+
           setMessage(data.message);
         }}
       >
@@ -31,13 +33,17 @@ const CreateTodo = () => {
         <label>Content: </label>
         <input
           type="text"
-          name="email"
+          name="content"
           className={
             "shadow-md bg-neutral-100 rounded px-2 py-1 " +
             `${error && "border border-red-600"}`
           }
-          onBlur={() => setError("")}
+          onBlur={() => {
+            setError("");
+          }}
+          value={content}
           onChange={(e) => {
+            setMessage("");
             setContent(e.target.value);
             setError("");
           }}
