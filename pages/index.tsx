@@ -52,7 +52,7 @@ export const updateTodo = async (data: Todo) => {
 const Home: NextPage<Todos> = ({ todos }) => {
   const router = useRouter();
 
-  const { data } = useSWR("/api/todo", fetchTodos, {
+  const { data, error } = useSWR("/api/tod", fetchTodos, {
     fallbackData: todos,
   });
 
@@ -70,30 +70,36 @@ const Home: NextPage<Todos> = ({ todos }) => {
         </div>
       </div>
 
-      {data.map((todo: Todo) => (
-        <Link key={todo.id} href={`/t/${todo.id}`}>
-          <div className="border border-black p-4 cursor-pointer hover:bg-neutral-100 mb-3 flex items-center gap-4">
-            <button
-              onClick={async (e) => {
-                e.stopPropagation();
+      {error ? (
+        <p>{error.message}</p>
+      ) : (
+        data.map((todo: Todo) => (
+          <Link key={todo.id} href={`/t/${todo.id}`}>
+            <div className="border border-black p-4 cursor-pointer hover:bg-neutral-100 mb-3 flex items-center gap-4">
+              <button
+                onClick={async (e) => {
+                  e.stopPropagation();
 
-                await updateTodo({ ...todo, isDone: !todo.isDone });
+                  await updateTodo({ ...todo, isDone: !todo.isDone });
 
-                mutate("/api/todo");
-              }}
-              className={classNames(
-                todo.isDone ? "text-green-400" : "text-gray-300"
-              )}
-            >
-              <CheckCircleIcon className={`w-12 h-12 hover:text-green-500 `} />
-            </button>
-            <div>
-              <h2 className="font-bold text-2xl">{todo.content}</h2>
-              <p>{todo.author.name}</p>
+                  mutate("/api/todo");
+                }}
+                className={classNames(
+                  todo.isDone ? "text-green-400" : "text-gray-300"
+                )}
+              >
+                <CheckCircleIcon
+                  className={`w-12 h-12 hover:text-green-500 `}
+                />
+              </button>
+              <div>
+                <h2 className="font-bold text-2xl">{todo.content}</h2>
+                <p>{todo.author.name}</p>
+              </div>
             </div>
-          </div>
-        </Link>
-      ))}
+          </Link>
+        ))
+      )}
     </Layout>
   );
 };

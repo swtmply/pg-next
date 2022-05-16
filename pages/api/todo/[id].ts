@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
 
@@ -12,8 +11,6 @@ export default async function handler(
     query: { id },
     method,
   } = req;
-  const session = await getSession({ req });
-
   switch (method) {
     case "PATCH":
       const updatedTodo = await prisma.todo.update({
