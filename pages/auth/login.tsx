@@ -21,7 +21,7 @@ const Login = () => {
           setIsLoading(true);
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const data = await axios
+          await axios
             .post("/api/auth/login", { email })
             .then((res) => {
               if (res.data.error) {
@@ -33,8 +33,8 @@ const Login = () => {
             })
             .catch((error) => setError(`Connection Error ${error}`));
 
-          router.push("/");
           setIsLoading(false);
+          router.push("/");
         }}
       >
         <h1 className="font-bold text-3xl mb-4">Login</h1>
