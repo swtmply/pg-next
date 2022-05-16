@@ -2,8 +2,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import { User } from "lib/interfaces";
+import { PrismaClient } from "@prisma/client";
 
 export default withIronSessionApiRoute(handler, sessionOptions);
+
+const prisma = new PrismaClient();
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { email } = req.body;
