@@ -1,23 +1,25 @@
 import { PrismaClient } from "@prisma/client";
+import { withIronSessionApiRoute } from "iron-session/next";
+import { sessionOptions } from "lib/session";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
 
 const prisma = new PrismaClient();
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default withIronSessionApiRoute(handler, sessionOptions);
+
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     body: { content },
     method,
+    session: { user },
   } = req;
-  const session = await getSession({ req });
+
+  if (!user) res.status(401).json({});
 
   switch (method) {
     case "POST":
       const todo = await prisma.todo.create({
-        data: { content, author: { connect: { id: session?.id as string } } },
+        data: { content, author: { connect: { id: user?.id as string } } },
       });
 
       if (!todo)
@@ -28,7 +30,7 @@ export default async function handler(
     default:
       const todos = await prisma.todo.findMany({
         where: {
-          authorId: session?.id as string,
+          authorId: user?.id as string,
         },
         include: {
           author: {

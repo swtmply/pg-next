@@ -1,9 +1,9 @@
 import Layout from "@/components/Layout";
 import React, { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import classNames from "classnames";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -21,18 +21,20 @@ const Login = () => {
           setIsLoading(true);
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const status: any = await signIn("credentials", {
-            redirect: false,
-            email,
-          });
+          const data = await axios
+            .post("/api/auth/login", { email })
+            .then((res) => {
+              if (res.data.error) {
+                setError(res.data.error);
+                return;
+              }
 
-          if (status.error) {
-            setError("Something went wrong");
-          }
-
-          setIsLoading(false);
+              return res.data;
+            })
+            .catch((error) => setError(`Connection Error ${error}`));
 
           router.push("/");
+          setIsLoading(false);
         }}
       >
         <h1 className="font-bold text-3xl mb-4">Login</h1>

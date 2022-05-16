@@ -3,7 +3,6 @@ import type { GetServerSideProps, NextPage } from "next";
 import prisma from "lib/prisma";
 import { Todos } from "lib/types";
 import Link from "next/link";
-import { getSession, signOut } from "next-auth/react";
 import Button from "@/components/Button";
 import { useRouter } from "next/router";
 import { CheckCircleIcon } from "@heroicons/react/outline";
@@ -11,31 +10,36 @@ import axios from "axios";
 import { Todo } from "lib/interfaces";
 import useSWR, { mutate } from "swr";
 import classNames from "classnames";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionOptions } from "lib/session";
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getSession({ req });
+export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
+  async ({ req }) => {
+    const user = req.session.user;
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/auth/login",
-        permanent: false,
+    if (user === undefined) {
+      return {
+        redirect: {
+          destination: "/auth/login",
+          permanent: false,
+        },
+      };
+    }
+
+    const todos = await prisma.todo.findMany({
+      where: {
+        authorId: user.id as string,
       },
-    };
-  }
-
-  const todos = await prisma.todo.findMany({
-    where: {
-      authorId: session?.id as string,
-    },
-    include: {
-      author: {
-        select: { name: true },
+      include: {
+        author: {
+          select: { name: true },
+        },
       },
-    },
-  });
-  return { props: { todos, session } };
-};
+    });
+    return { props: { todos } };
+  },
+  sessionOptions
+);
 
 const fetchTodos = async (url: string) => {
   return await axios.get(url).then((res) => res.data);
@@ -62,7 +66,11 @@ const Home: NextPage<Todos> = ({ todos }) => {
         <div className="flex gap-4">
           <Button onClick={() => router.push("/create")}>Add Todo</Button>
           <button
-            onClick={() => signOut()}
+            onClick={async () => {
+              await axios.post("/api/auth/logout").then(() => {
+                return router.push("/");
+              });
+            }}
             className="py-2 px-4 bg-neutral-800 hover:bg-neutral-900 text-white rounded"
           >
             Logout
