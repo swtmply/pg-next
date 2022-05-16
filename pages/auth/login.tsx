@@ -28,6 +28,8 @@ const Login = () => {
 
           setIsLoading(false);
 
+          console.log(data);
+
           if (!data?.ok) setError("Something went wrong.");
 
           router.push("/");
