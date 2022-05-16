@@ -21,16 +21,16 @@ const Login = () => {
           setIsLoading(true);
 
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const data: any = await signIn("credentials", {
+          const status: any = await signIn("credentials", {
             redirect: false,
             email,
           });
 
+          if (status.error) {
+            setError("Something went wrong");
+          }
+
           setIsLoading(false);
-
-          console.log(data);
-
-          if (!data?.ok) setError("Something went wrong.");
 
           router.push("/");
         }}

@@ -52,7 +52,7 @@ export const updateTodo = async (data: Todo) => {
 const Home: NextPage<Todos> = ({ todos }) => {
   const router = useRouter();
 
-  const { data, error } = useSWR("/api/tod", fetchTodos, {
+  const { data, error } = useSWR("/api/todo", fetchTodos, {
     fallbackData: todos,
   });
 
