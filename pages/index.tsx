@@ -12,17 +12,17 @@ import { Todo } from "lib/interfaces";
 import useSWR, { mutate } from "swr";
 import classNames from "classnames";
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getSession(ctx);
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/auth/login",
-        permanent: false,
-      },
-    };
-  }
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/auth/login",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   const todos = await prisma.todo.findMany({
     where: {
@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     },
   });
-  return { props: { todos } };
+  return { props: { todos, session } };
 };
 
 const fetchTodos = async (url: string) => {
