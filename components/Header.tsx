@@ -24,7 +24,7 @@ export const NavLink: React.FC<PropsWithChildren<NavLinkProps>> = ({
 
 const Header = () => {
   return (
-    <header className="h-20 w-10/12 max-w-7xl border-b-2 border-b-gray-100 mb-2">
+    <header className="h-20 w-10/12 max-w-7xl border-b-2 border-b-gray-100 mb-4">
       <nav className="font-medium flex justify-between items-center px-2 py-4">
         <div className="flex items-center gap-1">
           <Image src="/assets/vectors/logo.svg" width={40} height={40} alt="" />
@@ -44,7 +44,9 @@ const Header = () => {
               <MoonIcon className="w-6 h-6" />
             </button>
             <Link href="https://github.com/swtmply">
-              <GithubIcon className="w-6 h-6 hover:text-pink-500" />
+              <a>
+                <GithubIcon className="w-6 h-6 hover:text-pink-500" />
+              </a>
             </Link>
           </ul>
         </div>
