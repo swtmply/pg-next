@@ -32,9 +32,9 @@ export default NextAuth({
     }),
   ],
 
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.JWT_SECRET,
   jwt: {
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.JWT_SECRET,
   },
 
   pages: {
