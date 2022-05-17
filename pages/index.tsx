@@ -101,8 +101,15 @@ const Home: NextPage<Todos> = ({ todos }) => {
                 />
               </button>
               <div>
-                <h2 className="font-bold text-2xl">{todo.content}</h2>
-                <p>{todo.author.name}</p>
+                <h2
+                  className={classNames(
+                    "font-bold text-2xl",
+                    todo.isDone && "line-through decoration-2"
+                  )}
+                >
+                  {todo.content}
+                </h2>
+                <p className="text-neutral-500">{todo.author.name}</p>
               </div>
             </div>
           </Link>

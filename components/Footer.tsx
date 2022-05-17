@@ -21,12 +21,12 @@ const FooterLink: React.FC<PropsWithChildren<FooterLinkProps>> = ({
 
 const Footer = () => {
   return (
-    <footer className="bg-neutral-800 w-full h-screen flex justify-center px-10 py-20 text-white overflow-hidden">
+    <footer className="bg-neutral-800 w-screen min-h-screen flex justify-center px-10 py-20 text-white overflow-hidden">
       <div className="w-10/12 max-w-7xl flex flex-col gap-16 relative">
         <h2 className="font-lora font-bold text-4xl">
           Connect with me through:
         </h2>
-        <div className="grid grid-cols-3 grid-rows-2 gap-8">
+        <div className="grid auto-rows-auto lg:grid-cols-3 lg:grid-rows-2 gap-8">
           <FooterLink href="/">
             <TwitterIcon className="w-10 h-10" />
             <p>/allenwhun</p>
